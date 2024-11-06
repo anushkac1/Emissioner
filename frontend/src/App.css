@@ -1,0 +1,55 @@
+/* .App {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8f5e9;
+}
+
+.emission-checker {
+  text-align: center;
+  width: 300px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.error {
+  color: red;
+}
+
+.result {
+  margin-top: 20px;
+}
+*/
+.App {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8f5e9;
+}
+
+.emission-checker {
+  text-align: center;
+  width: 300px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.error {
+  color: red;
+}
+
+.result {
+  margin-top: 20px;
+}
