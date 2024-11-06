@@ -12,7 +12,8 @@ const EmissionChecker = () => {
 
   const checkEmissions = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/get_emission', { food });
+      // const response = await axios.post('http://127.0.0.1:4444/get_emission', { food });
+      const response = await axios.post('http://127.0.0.1:4444/get_emission', { food });
       setResult(response.data);
       setError(null);
     } catch (err) {
@@ -33,15 +34,10 @@ const EmissionChecker = () => {
       <button onClick={checkEmissions}>Check Emissions</button>
 
       {error && <p className="error">{error}</p>}
-      {result && (
+      {result && result.error && <p className="error">{result.error}</p>}
+      {result && result.emission && (
         <div className="result">
-          <p>Carbon Emission for {result.food}: {result.carbon_emission} kg CO₂</p>
-          <p>Recommendations:</p>
-          <ul>
-            {result.recommendations.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+          <p>Carbon Emission for {result.food}: {result.emission} kg CO₂</p>
         </div>
       )}
     </div>
