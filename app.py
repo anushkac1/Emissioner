@@ -43,6 +43,16 @@ from flask_cors import CORS
 import pandas as pd
 import os
 import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY is not set in the environment.")
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -54,7 +64,7 @@ emission_data = pd.read_csv(data_path)
 
 # Configure Gemini API
 # Replace with your actual API key
-genai.configure(api_key='AIzaSyBkYbPpWErNB79vtSNZzAN62o72Lmyscyw')
+genai.configure(api_key=GEMINI_API_KEY)
 
 # Function to get AI-generated emission estimates and suggestions
 
