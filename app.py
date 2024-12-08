@@ -63,7 +63,7 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])
 
 # Set up Flask extensions
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Change to your preferred database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -73,7 +73,7 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 # for authentication
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'  # Use the same secret key as in auth.py
+app.config['JWT_SECRET_KEY'] = 'your_secret_key'  # Using the same secret key as in auth.py
 jwt = JWTManager(app)
 
 # User model for SQLAlchemy
@@ -116,7 +116,6 @@ data_path = 'backend/venv/data/greenhouse-gas-emissions-per-kilogram-of-food-pro
 emission_data = pd.read_csv(data_path)
 
 # Configure Gemini API
-# Replace with your actual API key
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Function to get AI-generated emission estimates and suggestions

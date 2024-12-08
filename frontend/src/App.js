@@ -14,8 +14,8 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './components/login'; // Adjust the path if different
-import EmissionChecker from './components/EmissionChecker'; // Adjust the path if different
+import LoginPage from './components/login';
+import EmissionChecker from './components/EmissionChecker'; 
 import './App.css';
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('authToken'); // Check if user is logged in
