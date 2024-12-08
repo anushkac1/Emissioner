@@ -49,7 +49,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-// import './EmissionChecker.css';
+// import '../App.css';
 
 const EmissionChecker = () => {
   const [food, setFood] = useState('');
@@ -60,7 +60,7 @@ const EmissionChecker = () => {
 
   const checkEmissions = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:4444/get_emission', { food });
+      const response = await axios.post('http://127.0.0.1:4444/get-emission', { food });
       setResult(response.data);
       setError(null);
     } catch (err) {
