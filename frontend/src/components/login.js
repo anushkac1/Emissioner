@@ -1,49 +1,58 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
     try {
-    console.log(email);
-    console.log(password);
       const response = await axios.post('http://127.0.0.1:4444/login', { email, password });
-      console.log(response);
-      
       if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token); // Store JWT token
-        console.log("navigating");
-        navigate('/emission-checker'); // Redirect to EmissionChecker
+        localStorage.setItem('authToken', response.data.token);
+        navigate('/emission-checker');
       }
-
     } catch (err) {
-      setError('incorrect credentials');
+      setError('Incorrect credentials');
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+    <div className="container">
+      <div className="form_area">
+        <h2 className="title">Login</h2>
+        {error && <p className="sub_title">{error}</p>}
+        <form onSubmit={handleLogin}>
+          <div className="form_group">
+            <label htmlFor="email" className="sub_title">Email:</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="form_style"
+              required
+            />
+          </div>
+          <div className="form_group">
+            <label htmlFor="password" className="sub_title">Password:</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form_style"
+              required
+            />
+          </div>
+          <button type="submit" className="btn">Login</button>
+        </form>
+      </div>
     </div>
   );
 };
