@@ -27,7 +27,7 @@ input, button {
   margin-top: 20px;
 }
 
-Community Page Styles
+/* Community Page Styles */
 .community-page {
   display: flex;
   flex-direction: column;
@@ -113,7 +113,7 @@ button:hover {
 }
 
 
-/* login page */
+/* Login page */
 
 .container {
   display: flex;
@@ -193,4 +193,60 @@ button:hover {
   font-weight: 800;
   color: #264143;
   padding: 5px;
+}
+
+body {
+  margin-top: 70px; /* Adjust based on the navbar height */
+}
+
+/* Navbar styles */
+ nav {
+  background-color: #083e13;
+  padding: 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 900;  /* Ensure the navbar stays on top of other elements */
+} 
+
+
+
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+li {
+  margin: 0 10px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+}
+
+button {
+  background-color: #1d29d1;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d29d1;
+}
+
+.community-page {
+  background-color: #e8f5e9; /* Change this to the desired color */
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 100vh;
 }
