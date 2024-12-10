@@ -53,3 +53,40 @@ input, button {
 .result {
   margin-top: 20px;
 }
+
+/* Styles for the Alternatives Section */
+.alternatives-section {
+  text-align: left; /* Aligns the section content to the left */
+  margin-top: 20px;
+}
+
+.alternatives-section h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; /* Aligns the title with the list */
+}
+
+.alternatives-text p {
+  margin-left: 0; /* Removes extra left margin */
+  font-size: 1.0rem; /* Keeps the text slightly smaller for better readability */
+  line-height: 1.5;
+}
+
+/* Styling for the Title */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center; /* Ensures the title is centered */
+}
+
+/* Optional improvement for mobile responsiveness */
+@media screen and (max-width: 600px) {
+  .emission-checker {
+    width: 90%;
+  }
+
+  input, button {
+    width: 100%;
+  }
+}
