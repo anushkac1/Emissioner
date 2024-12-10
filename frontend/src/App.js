@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from './components/login';
 import EmissionChecker from './components/EmissionChecker';
 import CommunityPage from './components/CommunityPage';
-import ProfilePage from './components/ProfilePage'; // New ProfilePage component
+// import ProfilePage from './components/ProfilePage'; // New ProfilePage component
+import ProfilePage from './components/profilePage';
 import Navbar from './components/Navbar'; // Import the Navbar component
 import './App.css';
 

@@ -27,6 +27,43 @@ input, button {
   margin-top: 20px;
 }
 
+/* Styles for the Alternatives Section */
+.alternatives-section {
+  text-align: left; /* Aligns the section content to the left */
+  margin-top: 20px;
+}
+
+.alternatives-section h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; /* Aligns the title with the list */
+}
+
+.alternatives-text p {
+  margin-left: 0; /* Removes extra left margin */
+  font-size: 1.0rem; /* Keeps the text slightly smaller for better readability */
+  line-height: 1.5;
+}
+
+/* Styling for the Title */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center; /* Ensures the title is centered */
+}
+
+/* Optional improvement for mobile responsiveness */
+@media screen and (max-width: 600px) {
+  .emission-checker {
+    width: 90%;
+  }
+
+  input, button {
+    width: 100%;
+  }
+}
+
 /* Community Page Styles */
 .community-page {
   display: flex;
@@ -34,7 +71,7 @@ input, button {
   align-items: center;
   padding: 20px;
   width: 100%;
-  background-color: #f7f7f7;  /* Slightly different background */
+  background-color: #f7f7f7; /* Slightly different background */
   min-height: 100vh;
 }
 
@@ -111,7 +148,6 @@ button:hover {
 .delete-btn:hover {
   background-color: #c0392b;
 }
-
 
 /* Login page */
 
@@ -200,18 +236,15 @@ body {
 }
 
 /* Navbar styles */
- nav {
+nav {
   background-color: #083e13;
   padding: 8px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 900;  /* Ensure the navbar stays on top of other elements */
-} 
-
-
-
+  z-index: 900; /* Ensure the navbar stays on top of other elements */
+}
 
 ul {
   list-style-type: none;
@@ -231,22 +264,8 @@ a {
   font-size: 16px;
 }
 
-button {
-  background-color: #1d29d1;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-}
 
-button:hover {
-  background-color: #1d29d1;
-}
 
-.community-page {
-  background-color: #e8f5e9; /* Change this to the desired color */
-  padding: 20px;
-  border-radius: 10px;
-  min-height: 100vh;
-}
+
+
+

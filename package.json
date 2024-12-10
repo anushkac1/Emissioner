@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "react-router-dom": "^7.0.2"
+    "axios": "^1.7.9",
+    "react-router-dom": "^7.0.2",
+    "web-vitals": "^4.2.4"
+  },
+  "devDependencies": {
+    "eslint-config-react-app": "^7.0.1"
   }
 }

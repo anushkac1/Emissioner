@@ -70,25 +70,47 @@ const EmissionChecker = () => {
   };
 
   return (
-    <div className="emission-checker">
-      <h1>Emissioner</h1>
-      <input type="text" value={food} onChange={handleInputChange} placeholder="Enter food item" />
-      <button onClick={checkEmissions}>Check Emissions</button>
+    // <div className="emission-checker">
+    //   <h1>Emissioner</h1>
+    //   <input type="text" value={food} onChange={handleInputChange} placeholder="Enter food item" />
+    //   <button onClick={checkEmissions}>Check Emissions</button>
 
-      {error && <p className="error">{error}</p>}
-      {result && result.error && <p className="error">{result.error}</p>}
-      {result && (
-        <div className="result">
-          <p><strong>Carbon Emission for {result.food}:</strong> {result.emission} kg CO₂</p>
-          {result.recommendations && (
-            <>
-              <h3>AI Recommendations:</h3>
-              <pre>{result.recommendations}</pre>
-            </>
-          )}
-        </div>
-      )}
-    </div>
+    //   {error && <p className="error">{error}</p>}
+    //   {result && result.error && <p className="error">{result.error}</p>}
+    //   {result && (
+    //     <div className="result">
+    //       <p><strong>Carbon Emission for {result.food}:</strong> {result.emission} kg CO₂</p>
+    //       {result.recommendations && (
+    //         <>
+    //           <h3>Eco-friendly Alternatives:</h3>
+    //           <pre>{result.recommendations}</pre>
+    //         </>
+    //       )}
+    //     </div>
+    //   )}
+    // </div>
+    <div className="emission-checker">
+    <h1>Emissioner</h1>
+    <input type="text" value={food} onChange={handleInputChange} placeholder="Enter food item" />
+    <button onClick={checkEmissions}>Check Emissions</button>
+
+    {result && (
+      <div className="result">
+        <p><strong>Carbon Emission for {result.food}:</strong> {result.emission}</p>
+        {result.recommendations && (
+          <div className="alternatives-section">
+            <h3>Eco-friendly Alternatives:</h3>
+            <div className="alternatives-text">
+              {result.recommendations.split("\n").map((item, index) => (
+                <p key={index}>{item}</p>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+
   );
 };
 
