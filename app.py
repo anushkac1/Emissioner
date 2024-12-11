@@ -2,210 +2,215 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token
-import pandas as pd
-import os
-import google.generativeai as genai
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 from dotenv import load_dotenv
-from fuzzywuzzy import fuzz
-import json
-#TESTING
-from flask_jwt_extended import jwt_required
-
+from datetime import datetime, timedelta
+import os
 
 # Load environment variables
 load_dotenv()
-
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY is not set in the environment.")
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])
 
 # Configure Flask extensions
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
-
-#TESTING
-jwt = JWTManager(app)
+app.config['JWT_SECRET_KEY'] = os.getenv(
+    'JWT_SECRET_KEY', 'your_jwt_secret_key')
 
 # Initialize Flask extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-# Configure Gemini API
-genai.configure(api_key=GEMINI_API_KEY)
+# Debug prints for environment variables
+print("SECRET_KEY:", app.config['SECRET_KEY'])
+print("JWT_SECRET_KEY:", app.config['JWT_SECRET_KEY'])
 
-# Load training data for Gemini (optional)
-with open('gemini/gemini_training_data.json', 'r') as f:
-    training_data = json.load(f)
+# Models
 
-valid_inputs = [item['input'] for item in training_data]
 
-# Helper function for fuzzy matching
-def find_best_match(query):
-    best_match = max(valid_inputs, key=lambda x: fuzz.ratio(x.lower(), query.lower()))
-    similarity_score = fuzz.ratio(best_match.lower(), query.lower())
-    return best_match if similarity_score > 70 else None
-
-# Helper functions for querying Gemini
-def query_gemini_for_emission(food_item):
-    prompt = f"""
-    The user has entered the food item '{food_item}'.
-    Provide only the carbon emissions value (in kg CO₂ per kilogram) for '{food_item}'.
-    Respond in the format: "{food_item} emits approximately X kg CO₂ per kilogram."
-    """
-    try:
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        return response.text.strip()
-    except Exception as e:
-        return f"Error with Gemini API: {str(e)}"
-
-def query_gemini_for_alternatives(food_item):
-    prompt = f"""
-    The user has entered the food item '{food_item}'.
-    Suggest three alternative food items that are more eco-friendly with lower emissions.
-    Provide the alternatives as a numbered list.
-    """
-    try:
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        return response.text.strip()
-    except Exception as e:
-        return f"Error with Gemini API: {str(e)}"
-
-# User model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
-# Post model
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     caption = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Ensure this field exists
+
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'caption': self.caption,
+            'user_id': self.user_id,
+            # 'created_at': self.created_at.isoformat(),
+            'author_email': User.query.get(self.user_id).email
+        }
+
 
 # Create database tables
 with app.app_context():
     db.create_all()
 
-# Load emission data
-data_path = 'backend/venv/data/greenhouse-gas-emissions-per-kilogram-of-food-product.csv'
-emission_data = pd.read_csv(data_path)
-
-# Authentication endpoints
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    user = User.query.filter_by(email=email).first()
-    if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity=user.id)
-        return jsonify({"message": "Login successful", "token": access_token}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
+# Authentication Endpoints
 
 
-
-#TESTING
-# Endpoint to register a new user
 @app.route('/register', methods=['POST'])
 def register():
-    email = request.json.get('email')
-    password = request.json.get('password')
+    try:
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
 
-    if not email or not password:
-        return jsonify({"message": "Email and password are required"}), 400
+        if User.query.filter_by(email=email).first():
+            return jsonify({"message": "Email already registered"}), 400
 
-    # Check if the email already exists
-    existing_user = User.query.filter_by(email=email).first()
-    if existing_user:
-        return jsonify({"message": "User already exists"}), 409
+        hashed_password = bcrypt.generate_password_hash(
+            password).decode('utf-8')
+        new_user = User(email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
 
-    # Hash the password and save the user
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(email=email, password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
+        return jsonify({"message": "Registration successful"}), 201
+    except Exception as e:
+        return jsonify({"message": "Registration failed", "error": str(e)}), 500
 
-    return jsonify({"message": "User registered successfully"}), 201
+# @app.route('/login', methods=['POST'])
+# def login():
+#     try:
+#         data = request.json
+#         user = User.query.filter_by(email=data.get('email')).first()
 
-# Endpoint to delete a user
-@app.route('/delete-user/<int:user_id>', methods=['DELETE'])
-@jwt_required()
-def delete_user(user_id):
-    # Retrieve the user from the database
-    user = User.query.get(user_id)
-
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    # Delete the user
-    db.session.delete(user)
-    db.session.commit()
-
-    return jsonify({"message": f"User with ID {user_id} has been deleted successfully"}), 200
-
+#         if user and bcrypt.check_password_hash(user.password, data.get('password')):
+#             access_token = create_access_token(identity=user.id)
+#             return jsonify({
+#                 "message": "Login successful",
+#                 "token": access_token,
+#                 "user_id": user.id,
+#                 "email": user.email
+#             }), 200
+#         return jsonify({"message": "Invalid credentials"}), 401
+#     except Exception as e:
+#         return jsonify({"message": "Login failed", "error": str(e)}), 500
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.json
+        user = User.query.filter_by(email=data.get('email')).first()
 
-# Endpoint to get emission data
-@app.route('/get-emission', methods=['POST'])
-def get_emission():
-    food_item = request.json.get('food', '').strip().lower()
-    best_match = find_best_match(food_item)
+        if user and bcrypt.check_password_hash(user.password, data.get('password')):
+            access_token = create_access_token(
+                identity=str(user.id))  # Convert user ID to string
+            return jsonify({
+                "message": "Login successful",
+                "token": access_token,
+                "user_id": user.id,
+                "email": user.email
+            }), 200
+        return jsonify({"message": "Invalid credentials"}), 401
+    except Exception as e:
+        return jsonify({"message": "Login failed", "error": str(e)}), 500
 
-    if best_match:
-        matched_output = next(
-            (item['output'] for item in training_data if item['input'].lower() == best_match.lower()), None
-        )
-        alternatives = query_gemini_for_alternatives(food_item)
-        return jsonify({
-            'food': food_item,
-            'emission': matched_output,
-            'recommendations': alternatives
-        })
-    else:
-        emission = query_gemini_for_emission(food_item)
-        alternatives = query_gemini_for_alternatives(food_item)
-        return jsonify({
-            'food': food_item,
-            'emission': emission,
-            'recommendations': alternatives
-        })
+# Community Post Endpoints
 
-# Endpoint for community posts
+
 @app.route('/community-post', methods=['POST'])
+@jwt_required()
 def create_post():
-    caption = request.json.get('caption')
-    if not caption:
-        return jsonify({"message": "No caption provided"}), 400
-    post = Post(caption=caption)
-    db.session.add(post)
-    db.session.commit()
-    return jsonify({"caption": caption}), 201
+    try:
+        # Debugging prints
+        print("Token identity:", get_jwt_identity())
+        print("Request payload:", request.json)
+
+        current_user_id = get_jwt_identity()
+        data = request.json
+        caption = data.get('caption')
+
+        if not caption:
+            return jsonify({"message": "No caption provided"}), 400
+
+        post = Post(caption=caption, user_id=current_user_id)
+        db.session.add(post)
+        db.session.commit()
+
+        return jsonify(post.to_dict()), 201
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({"message": "Internal server error", "error": str(e)}), 500
+
 
 @app.route('/community-posts', methods=['GET'])
 def get_posts():
-    posts = Post.query.all()
-    return jsonify([{'caption': post.caption} for post in posts])
+    try:
+        print("Fetching posts from the database...")
+        posts = Post.query.order_by(Post.created_at.desc()).all()
+        print(f"Fetched posts: {[post.to_dict() for post in posts]}")
+        return jsonify([post.to_dict() for post in posts])
+    except Exception as e:
+        print(f"Error fetching posts: {str(e)}")  # Log the error
+        return jsonify({"message": "Error fetching posts", "error": str(e)}), 500
 
-# Validate query endpoint
-@app.route('/validate_query', methods=['POST'])
-def validate_query():
-    query = request.json.get('query', '').strip().lower()
-    best_match = find_best_match(query)
-    if best_match:
-        return jsonify({'valid': True, 'best_match': best_match})
-    else:
-        return jsonify({'valid': False, 'message': "Invalid query."}), 400
 
-# Run the app
+
+@app.route('/community-post/<int:post_id>', methods=['PUT'])
+@jwt_required()
+def update_post(post_id):
+    try:
+        current_user_id = get_jwt_identity()
+        print("Token identity:", current_user_id)  # Debugging statement
+        post = Post.query.get_or_404(post_id)
+        print("Post User ID:", post.user_id)       # Debugging statement
+
+        if post.user_id != int(current_user_id):
+            return jsonify({"message": "Unauthorized"}), 403
+
+        data = request.json
+        post.caption = data.get('caption', post.caption)
+        db.session.commit()
+        return jsonify(post.to_dict()), 200
+    except Exception as e:
+        print(f"Error updating post: {str(e)}")
+        return jsonify({"message": "Error updating post", "error": str(e)}), 500
+
+
+
+@app.route('/community-post/<int:post_id>', methods=['DELETE'])
+@jwt_required()
+def delete_post(post_id):
+    try:
+        current_user_id = get_jwt_identity()
+        print("Token identity (delete):", current_user_id)  # Debugging
+
+        post = Post.query.get_or_404(post_id)
+        print("Post User ID:", post.user_id, type(post.user_id))  # Debugging
+        print("Current User ID:", current_user_id, type(current_user_id))  # Debugging
+
+        if post.user_id != int(current_user_id):
+            print("Unauthorized attempt to delete post")  # Debugging
+            return jsonify({"message": "Unauthorized"}), 403
+
+        db.session.delete(post)
+        db.session.commit()
+        print("Post deleted successfully")  # Debugging
+        return jsonify({"message": "Post deleted successfully"}), 200
+
+    except Exception as e:
+        print("Error deleting post:", str(e))
+        return jsonify({"message": "Error deleting post", "error": str(e)}), 500
+
+
+
+# Run the Flask app
 if __name__ == "__main__":
-    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)))
+    app.run(host='0.0.0.0', port=4444, debug=True)
