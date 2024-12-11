@@ -3,15 +3,24 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
+import pandas as pd
+import os
+import google.generativeai as genai
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 import json
 #TESTING
 from flask_jwt_extended import jwt_required
+import os
+from datetime import datetime
+
 
 
 # Load environment variables
 load_dotenv()
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY is not set in the environment.")
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -20,7 +29,7 @@ CORS(app, origins=["http://localhost:3000"])
 # Configure Flask extensions
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SECRET_KEY'] =  'your_secret_key'
-print("SECRET_KEY:", os.getenv('SECRET_KEY'))
+# print("SECRET_KEY:", os.getenv('SECRET_KEY'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv(
     'JWT_SECRET_KEY', 'your_jwt_secret_key')
@@ -34,42 +43,70 @@ jwt = JWTManager(app)
 print("SECRET_KEY:", app.config['SECRET_KEY'])
 print("JWT_SECRET_KEY:", app.config['JWT_SECRET_KEY'])
 
-# Models
+# Configure Gemini API
+genai.configure(api_key=GEMINI_API_KEY)
 
+# Load training data for Gemini (optional)
+with open('gemini/gemini_training_data.json', 'r') as f:
+    training_data = json.load(f)
 
+valid_inputs = [item['input'] for item in training_data]
+
+# Helper function for fuzzy matching
+def find_best_match(query):
+    best_match = max(valid_inputs, key=lambda x: fuzz.ratio(x.lower(), query.lower()))
+    similarity_score = fuzz.ratio(best_match.lower(), query.lower())
+    return best_match if similarity_score > 70 else None
+
+# Helper functions for querying Gemini
+def query_gemini_for_emission(food_item):
+    prompt = f"""
+    The user has entered the food item '{food_item}'.
+    Provide only the carbon emissions value (in kg CO₂ per kilogram) for '{food_item}'.
+    Respond in the format: "{food_item} emits approximately X kg CO₂ per kilogram."
+    """
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"Error with Gemini API: {str(e)}"
+
+def query_gemini_for_alternatives(food_item):
+    prompt = f"""
+    The user has entered the food item '{food_item}'.
+    Suggest three alternative food items that are more eco-friendly with lower emissions.
+    Provide the alternatives as a numbered list.
+    """
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"Error with Gemini API: {str(e)}"
+
+# User model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
-
+# Post model
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     caption = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Ensure this field exists
-
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
         return {
             'id': self.id,
             'caption': self.caption,
             'user_id': self.user_id,
-            # 'created_at': self.created_at.isoformat(),
-            'author_email': User.query.get(self.user_id).email
+            'author_email': User.query.get(self.user_id).email,
+            'created_at': self.created_at.isoformat()
         }
-
-
-# History
-class History(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Associate with the user
-    food_item = db.Column(db.String(255), nullable=False)
-    emission = db.Column(db.String(255), nullable=False)
-    recommendations = db.Column(db.String(255), nullable=True)
-
-    user = db.relationship('User', backref=db.backref('histories', lazy=True))  # Relationship with User
 
 # History
 class History(db.Model):
@@ -85,6 +122,11 @@ class History(db.Model):
 with app.app_context():
     db.create_all()
 
+# Load emission data
+data_path = 'backend/venv/data/greenhouse-gas-emissions-per-kilogram-of-food-product.csv'
+emission_data = pd.read_csv(data_path)
+
+
 # Authentication Endpoints
 
 # # Authentication endpoints
@@ -99,17 +141,17 @@ with app.app_context():
 #     else:
 #         return jsonify({"message": "Invalid credentials"}), 401
 
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    user = User.query.filter_by(email=email).first()
-    if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity=str(user.id))  # Convert user ID to string
-        print(f"Generated token for user {user.id}: {access_token}")  # Debugging
-        return jsonify({"message": "Login successful", "token": access_token}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
+# @app.route('/login', methods=['POST'])
+# def login():
+#     email = request.json.get('email')
+#     password = request.json.get('password')
+#     user = User.query.filter_by(email=email).first()
+#     if user and bcrypt.check_password_hash(user.password, password):
+#         access_token = create_access_token(identity=str(user.id))  # Convert user ID to string
+#         print(f"Generated token for user {user.id}: {access_token}")  # Debugging
+#         return jsonify({"message": "Login successful", "token": access_token}), 200
+#     else:
+#         return jsonify({"message": "Invalid credentials"}), 401
 
 
 
@@ -226,6 +268,12 @@ def get_emission():
     # Get user ID from the JWT token
     
     return jsonify(response)
+
+# Helper function for fuzzy matching
+def find_best_match(query):
+    best_match = max(valid_inputs, key=lambda x: fuzz.ratio(x.lower(), query.lower()))
+    similarity_score = fuzz.ratio(best_match.lower(), query.lower())
+    return best_match if similarity_score > 70 else None
 
 # # Endpoint to get emissions for a specific food item
 # @app.route('/get-emission', methods=['POST'])
