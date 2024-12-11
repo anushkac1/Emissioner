@@ -1,6 +1,6 @@
 /* Existing styles */
 /* Add the Inter font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); 
 
 body {
   font-family: 'Inter', sans-serif;
@@ -187,6 +187,8 @@ button:hover {
   box-shadow: 3px 4px 0px 1px #9fc7aa;
 }
 
+
+
 .title {
   color: white;
   font-weight: 900;
@@ -196,6 +198,7 @@ button:hover {
 
 .sub_title {
   font-weight: 600;
+  color: white;
   margin: 5px 0;
 }
 
@@ -206,14 +209,21 @@ button:hover {
   margin: 10px;
 }
 
+/* Styling for Input Fields */
 .form_style {
-  outline: none;
-  border: 2px solid #264143;
-  box-shadow: 3px 4px 0px 1px #000000;
+  color: white; /* Makes the text inside the input field white */
+  background-color: transparent; /* Ensures background is transparent */
+  border: 2px solid white; /* White border for the input field */
+  box-shadow: 3px 4px 0px 1px #000000; /* Optional shadow for styling */
   width: 290px;
   padding: 12px 10px;
   border-radius: 4px;
   font-size: 15px;
+}
+
+/* Styling for Placeholder Text */
+.form_style::placeholder {
+  color: #dcdcdc; /* Light gray color for the placeholder text */
 }
 
 .form_style:focus, .btn:focus {
@@ -294,3 +304,52 @@ body {
   height: auto;
   border-radius: 10px; /* Optional: add rounded corners */
 }
+
+/* Loader styles */
+svg {
+  width: 3.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
+
+circle {
+  fill: none;
+  stroke: hsl(214, 97%, 59%);
+  stroke-width: 2;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash4 {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}
+
+
+.content-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;    /* Center horizontally */
+  justify-content: center; /* Center vertically if needed */
+  margin: 0.5 auto; /* Center the container horizontally */
+}
+
