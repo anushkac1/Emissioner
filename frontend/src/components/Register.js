@@ -61,7 +61,7 @@ const Register = () => {
       {/* Button to go back to Login */}
       <button
         onClick={() => navigate('/login')}
-        style={{ marginTop: '20px', padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '5px' }}
+        style={{ marginTop: '20px', padding: '10px 20px', background: '#083e13', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '5px' }}
       >
         Back to Login
       </button>
