@@ -1,6 +1,8 @@
 //TESTINGNGN
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import logo2 from './assets/logoCrop.png'; // Adjust the extension to match your file
+
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -34,6 +36,10 @@ const Register = () => {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      {/* Image in the center */}
+      <div className="image-container">
+        <img src={logo2} alt="Eco-friendly illustration" className="logo-normal"/>
+      </div>
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <div>
@@ -61,7 +67,7 @@ const Register = () => {
       {/* Button to go back to Login */}
       <button
         onClick={() => navigate('/login')}
-        style={{ marginTop: '20px', padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '5px' }}
+        style={{ marginTop: '20px', padding: '10px 20px', background: '#083e13', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '5px' }}
       >
         Back to Login
       </button>

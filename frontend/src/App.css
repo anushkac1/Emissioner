@@ -1,11 +1,22 @@
 /* Existing styles */
+/* Add the Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); 
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  
+  background-color: #9fc7aa; /* Match the navbar background color */
+  
+}
+
 .App {
   font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #e8f5e9;
+  background-color: #9fc7aa;
 }
 
 .emission-checker {
@@ -71,7 +82,7 @@ h1 {
   align-items: center;
   padding: 20px;
   width: 100%;
-  background-color: #f7f7f7; /* Slightly different background */
+  background-color: #9fc7aa; /* Slightly different background */
   min-height: 100vh;
 }
 
@@ -101,7 +112,7 @@ textarea {
 
 button {
   padding: 10px 20px;
-  background-color: #007BFF;
+  background-color: #083e13;
   color: white;
   border: none;
   border-radius: 5px;
@@ -109,7 +120,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #106c22;
 }
 
 .posts-list {
@@ -159,7 +170,7 @@ button:hover {
   text-align: center;
   height: 100vh; /* Full height of the viewport */
   margin: 0; /* Reset default margins */
-  background-color: #e8f5e9;
+  background-color: #9fc7aa;
 }
 
 .form_area {
@@ -167,17 +178,19 @@ button:hover {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #5c8054;
+  background-color: #083e13;
   height: auto;
   width: auto;
   padding: 20px; /* Added padding for spacing */
-  border: 2px solid #264143;
+  border: 2px solid #083e13;
   border-radius: 20px;
-  box-shadow: 3px 4px 0px 1px #060401;
+  box-shadow: 3px 4px 0px 1px #9fc7aa;
 }
 
+
+
 .title {
-  color: #264143;
+  color: white;
   font-weight: 900;
   font-size: 1.5em;
   margin-top: 20px;
@@ -185,6 +198,7 @@ button:hover {
 
 .sub_title {
   font-weight: 600;
+  color: white;
   margin: 5px 0;
 }
 
@@ -195,19 +209,26 @@ button:hover {
   margin: 10px;
 }
 
+/* Styling for Input Fields */
 .form_style {
-  outline: none;
-  border: 2px solid #264143;
-  box-shadow: 3px 4px 0px 1px #000000;
+  color: white; /* Makes the text inside the input field white */
+  background-color: transparent; /* Ensures background is transparent */
+  border: 2px solid white; /* White border for the input field */
+  box-shadow: 3px 4px 0px 1px #000000; /* Optional shadow for styling */
   width: 290px;
   padding: 12px 10px;
   border-radius: 4px;
   font-size: 15px;
 }
 
+/* Styling for Placeholder Text */
+.form_style::placeholder {
+  color: #dcdcdc; /* Light gray color for the placeholder text */
+}
+
 .form_style:focus, .btn:focus {
   transform: translateY(4px);
-  box-shadow: 1px 2px 0px 0px #63d670;
+  box-shadow: 1px 2px 0px 0px #9fc7aa;
 }
 
 .btn {
@@ -215,7 +236,7 @@ button:hover {
   margin: 25px 0px;
   width: 290px;
   font-size: 15px;
-  background: #117124;
+  background: #78b484;
   border-radius: 10px;
   font-weight: 800;
   box-shadow: 3px 3px 0px 0px #011407;
@@ -243,8 +264,9 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 900; /* Ensure the navbar stays on top of other elements */
+  z-index: 1000; /* Ensure the navbar stays above other content */
 }
+
 
 ul {
   list-style-type: none;
@@ -262,10 +284,159 @@ a {
   text-decoration: none;
   color: white;
   font-size: 16px;
+  font-family: 'Inter', sans-serif; /* Apply Inter font here */
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  /* This will make all text inside the body bold */
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0; /* Adjust margin as needed */
+}
+
+/* .image-container img {
+  max-width: 30%;
+  height: auto;
+  border-radius: 10px; /* Optional: add rounded corners */
+/* } */
+
+/* Loader styles */
+svg {
+  width: 3.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
+
+circle {
+  fill: none;
+  stroke: hsl(214, 97%, 59%);
+  stroke-width: 2;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash4 {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -125px;
+  }
 }
 
 
+.content-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;    /* Center horizontally */
+  justify-content: center; /* Center vertically if needed */
+  margin: 0.5 auto; /* Center the container horizontally */
+}
 
+/* LoginPage - Large Logo */
+.logo-large {
+  max-width: 120%; /* Large size for LoginPage */
+  height: auto;
+}
 
+/* EmissionCheckerPage - Normal Size Logo */
+.logo-normal {
+  max-width: 25%; /* Normal size for EmissionCheckerPage */
+  height: auto;
+}
 
+/* Center the table */
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
+/* Style the table */
+.table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Table headers */
+.table th {
+  background-color: #083e13;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
+}
+
+/* Table rows */
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* Alternating row colors */
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .table {
+    width: 95%;
+    font-size: 12px;
+  }
+
+  .table th, .table td {
+    padding: 8px;
+  }
+}
+
+/* Page title styling */
+.page-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #083e13;
+}
+
+/* Container for better alignment */
+.page-container {
+  padding: 20px;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1200px;
+}
