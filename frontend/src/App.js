@@ -110,7 +110,7 @@ const App = () => {
 
           {/* Profile Page (Protected) */}
           <Route
-            path="/profile"
+            path="/profile-page"
             element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />}
           />
         </Routes>
