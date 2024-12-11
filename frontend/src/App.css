@@ -299,11 +299,11 @@ body {
   margin: 40px 0; /* Adjust margin as needed */
 }
 
-.image-container img {
-  max-width: 130%;
+/* .image-container img {
+  max-width: 30%;
   height: auto;
   border-radius: 10px; /* Optional: add rounded corners */
-}
+/* } */
 
 /* Loader styles */
 svg {
@@ -353,3 +353,14 @@ circle {
   margin: 0.5 auto; /* Center the container horizontally */
 }
 
+/* LoginPage - Large Logo */
+.logo-large {
+  max-width: 120%; /* Large size for LoginPage */
+  height: auto;
+}
+
+/* EmissionCheckerPage - Normal Size Logo */
+.logo-normal {
+  max-width: 25%; /* Normal size for EmissionCheckerPage */
+  height: auto;
+}

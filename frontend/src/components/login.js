@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo2 from './assets/logoCrop.png'; // Adjust the extension to match your file
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -23,6 +25,10 @@ const LoginPage = () => {
 
   return (
     <div className="container">
+      {/* Image in the center */}
+      <div className="image-container">
+        <img src={logo2} alt="Eco-friendly illustration" className="logo-normal"/>
+      </div>
       <div className="form_area">
         <h2 className="title">Login</h2>
         {error && <p className="sub_title">{error}</p>}
