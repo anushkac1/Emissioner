@@ -72,7 +72,7 @@ import LoginPage from './components/login';
 import Register from './components/Register'; // Import the Register component
 import EmissionChecker from './components/EmissionChecker';
 import CommunityPage from './components/CommunityPage';
-import ProfilePage from './components/profilePage';
+import ProfilePage from './components/ProfilePage';
 import Navbar from './components/Navbar';
 import './App.css';
 

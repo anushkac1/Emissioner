@@ -1,4 +1,13 @@
 /* Existing styles */
+/* Add the Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  
+}
+
+
 .App {
   font-family: Arial, sans-serif;
   display: flex;
@@ -262,8 +271,13 @@ a {
   text-decoration: none;
   color: white;
   font-size: 16px;
+  font-family: 'Inter', sans-serif; /* Apply Inter font here */
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  /* This will make all text inside the body bold */
+}
 
 
 
