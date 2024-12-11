@@ -9,6 +9,9 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 import json
+#TESTING
+from flask_jwt_extended import jwt_required
+
 
 # Load environment variables
 load_dotenv()
@@ -26,6 +29,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_secret_key')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
+
+#TESTING
+jwt = JWTManager(app)
 
 # Initialize Flask extensions
 db = SQLAlchemy(app)
@@ -104,6 +110,50 @@ def login():
         return jsonify({"message": "Login successful", "token": access_token}), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
+
+
+
+#TESTING
+# Endpoint to register a new user
+@app.route('/register', methods=['POST'])
+def register():
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    if not email or not password:
+        return jsonify({"message": "Email and password are required"}), 400
+
+    # Check if the email already exists
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({"message": "User already exists"}), 409
+
+    # Hash the password and save the user
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    new_user = User(email=email, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"message": "User registered successfully"}), 201
+
+# Endpoint to delete a user
+@app.route('/delete-user/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    # Retrieve the user from the database
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Delete the user
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"message": f"User with ID {user_id} has been deleted successfully"}), 200
+
+
+
 
 # Endpoint to get emission data
 @app.route('/get-emission', methods=['POST'])
