@@ -7,10 +7,10 @@ body {
   font-weight: bold;  
 }
 
-
 .App {
   font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -290,10 +290,4 @@ body {
   max-width: 130%;
   height: auto;
   border-radius: 10px; /* Optional: add rounded corners */
-  
 }
-
-
-
-
-
