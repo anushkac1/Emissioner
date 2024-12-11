@@ -5,6 +5,8 @@
 body {
   font-family: 'Inter', sans-serif;
   font-weight: bold;  
+  background-color: #9fc7aa; /* Match the navbar background color */
+  
 }
 
 .App {
@@ -252,8 +254,9 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 900; /* Ensure the navbar stays on top of other elements */
+  z-index: 1000; /* Ensure the navbar stays above other content */
 }
+
 
 ul {
   list-style-type: none;
