@@ -5,6 +5,8 @@ import logo2 from './assets/logoCrop.png'; // Adjust the extension to match your
 
 
 const LoginPage = () => {
+    const token = localStorage.getItem("authToken");
+  console.log("The token when the login page first loads: ", token);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,9 +15,11 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+        console.log("login in is being it");
       const response = await axios.post('http://127.0.0.1:4444/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
+        console.log("The current user's token that was just set by login:", localStorage.getItem("authToken"));
         navigate('/emission-checker');
       }
     } catch (err) {

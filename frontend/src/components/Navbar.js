@@ -21,7 +21,7 @@ const Navbar = () => {
           <Link to="/emission-checker" style={linkStyles}>Emission Checker</Link>
         </li>
         <li style={liStyles}>
-          <Link to="/profile" style={linkStyles}>Profile</Link>
+          <Link to="/profile-page" style={linkStyles}>Profile</Link>
         </li>
         <li style={liStyles}>
           <Link to="/community" style={linkStyles}>Community</Link>
