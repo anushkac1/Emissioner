@@ -14,7 +14,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #e8f5e9;
+  background-color: #9fc7aa;
 }
 
 .emission-checker {
@@ -80,7 +80,7 @@ h1 {
   align-items: center;
   padding: 20px;
   width: 100%;
-  background-color: #f7f7f7; /* Slightly different background */
+  background-color: #9fc7aa; /* Slightly different background */
   min-height: 100vh;
 }
 
@@ -168,7 +168,7 @@ button:hover {
   text-align: center;
   height: 100vh; /* Full height of the viewport */
   margin: 0; /* Reset default margins */
-  background-color: #e8f5e9;
+  background-color: #9fc7aa;
 }
 
 .form_area {
@@ -277,6 +277,20 @@ a {
 body {
   font-family: 'Inter', sans-serif;
   font-weight: bold;  /* This will make all text inside the body bold */
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0; /* Adjust margin as needed */
+}
+
+.image-container img {
+  max-width: 130%;
+  height: auto;
+  border-radius: 10px; /* Optional: add rounded corners */
+  
 }
 
 
