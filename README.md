@@ -17,7 +17,7 @@ An app to help individuals track their carbon emissions footprint via the food c
 2. Go into the respository
 
    ```cd Emissioner```
-3. Install dependencies (Node.js)
+3. Install dependencies (Node.js) - please note, you may be prompted to download several dependencies such as axios in addition to this!
 
    ```npm install```
 
@@ -39,6 +39,28 @@ An app to help individuals track their carbon emissions footprint via the food c
    ```npm run start```
 
 8. To exit the application, use Ctrl+C in the terminal and re-enter via the python app.py command.
+
+# Potential Errors
+1. Might face issues with your version of react and eslintConfig. Here are some potential ways to troubleshoot it. 
+   * We recommend uninstalling and reinstalling node modules if the error persists
+   * Check what versions you have
+   * Is your ESLint compatible with your react version?
+   * Update dependencies
+   * Clear your cache 
+   * Might need to include a ```root:true``` under your package.json extensions OR remove it(see below)
+   * Ensure package.json includes
+    ```
+    "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+     }, 
+        ```
+2. Generating gemini_training_data.json requires you to move the python generation file outside of the Gemini folder first.
+   Note this is already generated so there is no need to rerun this file. 
+     
+
 
 # Credits
 Canvas - https://www.canva.com
