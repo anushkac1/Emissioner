@@ -1,0 +1,479 @@
+/* Style the entire application with css for different components such as the app, different pages, 
+buttons, text fields, sizes, fonts, alignment, and more! */
+
+
+/* import inter font from google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); 
+
+/* overall body styling where navbar matches background color */
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  
+  background-color: #9fc7aa; 
+  
+}
+
+/* overall app styling - elements stacked on top of each other for page layout */
+.App {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #9fc7aa;
+}
+
+/* emission checker pages */
+.emission-checker {
+  text-align: center;
+  width: 300px;
+}
+
+/* for input button */
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* if error occurs */
+.error {
+  color: red;
+}
+
+/* result styling */
+.result {
+  margin-top: 20px;
+}
+
+/* styling for gpt alternative suggestions section  */
+.alternatives-section {
+  text-align: left; 
+  margin-top: 20px;
+}
+
+/* the heading3 for altenratives section styled */
+.alternatives-section h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; 
+}
+
+/* text for this section styled  */
+.alternatives-text p {
+  margin-left: 0; 
+  font-size: 1.0rem; 
+  line-height: 1.5;
+}
+
+/* styles overall title + makes sure centered */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center; 
+}
+
+/* if we use on phone - styling */
+@media screen and (max-width: 600px) {
+  .emission-checker {
+    width: 90%;
+  }
+
+  input, button {
+    width: 100%;
+  }
+}
+
+/* styling for community page */
+.community-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  background-color: #9fc7aa; 
+  min-height: 100vh;
+}
+
+/* posting page styling for typing it up*/
+.post-form {
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* textbox area styling */
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+/* button to post styling */
+button {
+  padding: 10px 20px;
+  background-color: #083e13;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* hover over button styling*/
+button:hover {
+  background-color: #106c22;
+}
+
+/* list of posts styling */
+.posts-list {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* what it looks like once posted styling */
+.post-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* caption for post - who posted - styling */
+.post-caption {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* to delete post */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #FF5733;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* hovering over delete button */
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* login page styling overall*/
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh; 
+  margin: 0; 
+  background-color: #9fc7aa;
+}
+
+/* user input area styling */
+.form_area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #083e13;
+  height: auto;
+  width: auto;
+  padding: 20px;
+  border: 2px solid #083e13;
+  border-radius: 20px;
+  box-shadow: 3px 4px 0px 1px #9fc7aa;
+}
+
+
+/* login page title */
+.title {
+  color: white;
+  font-weight: 900;
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+
+/* subtitle for login page */
+.sub_title {
+  font-weight: 600;
+  color: white;
+  margin: 5px 0;
+}
+
+/* for the text inpits  */
+.form_group {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin: 10px;
+}
+
+/* input area styling in login  */
+.form_style {
+  color: white; 
+  background-color: transparent; 
+  border: 2px solid white;
+  box-shadow: 3px 4px 0px 1px #000000; 
+  width: 290px;
+  padding: 12px 10px;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+/* placeholder text - to prompt input */
+.form_style::placeholder {
+  color: #dcdcdc; 
+}
+
+/* button styling */
+.form_style:focus, .btn:focus {
+  transform: translateY(4px);
+  box-shadow: 1px 2px 0px 0px #9fc7aa;
+}
+
+/* styling for button */
+.btn {
+  padding: 15px;
+  margin: 25px 0px;
+  width: 290px;
+  font-size: 15px;
+  background: #78b484;
+  border-radius: 10px;
+  font-weight: 800;
+  box-shadow: 3px 3px 0px 0px #011407;
+}
+
+/* styling hover over button */
+.btn:hover {
+  opacity: .9;
+}
+
+/* links to next page style */
+.link {
+  font-weight: 800;
+  color: #264143;
+  padding: 5px;
+}
+
+/* body of elements proportional to navbar */
+body {
+  margin-top: 70px; 
+}
+
+/* navbar styles - above other content */
+nav {
+  background-color: #083e13;
+  padding: 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+
+
+/* styling for unordered lists */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* styling for lists */
+li {
+  margin: 0 10px;
+}
+
+
+/* styling for anchor links */
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif; 
+}
+
+/* styling body */
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;  
+}
+
+/* styling for image - such as logo */
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0; 
+}
+
+
+/* styling for the loading during gemini prompting */
+svg {
+  width: 3.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
+
+/* circle for loader styled here */
+circle {
+  fill: none;
+  stroke: hsl(121, 88%, 10%);
+  stroke-width: 2;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}
+
+
+/* rotate circle */
+@keyframes rotate4 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* more circle loading at diffeent frames styling */
+@keyframes dash4 {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}
+
+
+
+/* overall container stacking  */
+.content-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  justify-content: center; 
+  margin: 0.5 auto; 
+}
+
+/* logo on login page style*/
+.logo-large {
+  max-width: 120%; 
+  height: auto;
+}
+
+/* logo on emission checker page - smaller */
+.logo-normal {
+  max-width: 25%; 
+  height: auto;
+}
+
+/* table for query history styled */
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+/* style table */
+.table {
+  width: 80%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* incorporate headers for table */
+.table th {
+  background-color: #083e13;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
+}
+
+/* incorporate rows for queries on table */
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* alternate row colors on table */
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+
+/* if you hover over table rows */
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* overall table responsiveness to hovering */
+@media (max-width: 768px) {
+  .table {
+    width: 95%;
+    font-size: 12px;
+  }
+
+  .table th, .table td {
+    padding: 8px;
+  }
+}
+
+/* title page styled */
+.page-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #083e13;
+}
+
+/* better alignment styling overall */
+.page-container {
+  padding: 20px;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1200px;
+}
