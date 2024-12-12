@@ -27,9 +27,9 @@ CORS(app, origins=["http://localhost:3000"])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Using an SQLite database
 app.config['SECRET_KEY'] = 'your_secret_key'  # Secret key for app security with JWT tokens
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # To Disable unnecessary warnings
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')  # JWT secret
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')  # Our JWT secret key, will change it to something more secure for production
 
-# Initialize Flask extensions for database, encryption, and authentication
+# Initializing our Flask extensions for database, encryption, and authentication
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
@@ -278,7 +278,7 @@ def create_post():
         print("Error:", str(e))
         return jsonify({"message": "Internal server error", "error": str(e)}), 500
 
-# Endpoint to fetch all community posts
+# Backend Endpoint to fetch all community posts
 @app.route('/community-posts', methods=['GET'])
 def get_posts():
     try:
