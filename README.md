@@ -31,3 +31,8 @@ An app to help individuals track their carbon emissions footprint via the food c
    ```npm run start```
 
 5. To exit the application, use Ctrl+C in the terminal and re-enter via the python app.py command.
+
+# Credits
+Canvas - https://www.canva.com
+
+Uiverse - https://uiverse.io
