@@ -57,7 +57,6 @@ An app to help individuals track their carbon emissions footprint via the food c
     ]
      },
     
-        ```
 2. Generating gemini_training_data.json requires you to move the python generation file outside of the Gemini folder first.
    Note this is already generated so there is no need to rerun this file. 
      
