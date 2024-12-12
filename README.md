@@ -21,16 +21,24 @@ An app to help individuals track their carbon emissions footprint via the food c
 
    ```npm install```
 
-4. Run the application using the following command (sets to default port 5000):
+4. Create .env file
+5. Input the following into the .env file
+   ```
+   .gitignore
+   GEMINI_API_KEY='AIzaSyBkYbPpWErNB79vtSNZzAN62o72Lmyscyw'
+   SECRET_KEY=your_secret_key
+   JWT_SECRET_KEY=your_jwt_secret_key
+
+6. Run the application using the following command (sets to default port 5000):
    
    ```python app.py``` or ```python3 app.py```
-5. To run the frontend, change directory into the frontend folder and run
+7. To run the frontend, change directory into the frontend folder and run
 
    ```cd frontend```
    
    ```npm run start```
 
-5. To exit the application, use Ctrl+C in the terminal and re-enter via the python app.py command.
+8. To exit the application, use Ctrl+C in the terminal and re-enter via the python app.py command.
 
 # Credits
 Canvas - https://www.canva.com
