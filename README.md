@@ -22,7 +22,7 @@ An app to help individuals track their carbon emissions footprint via the food c
    ```npm install```
 
 4. Create .env file
-5. Input the following into the .env file
+5. Input the following into the .env file (located outside of all folders)
    ```
    .gitignore
    GEMINI_API_KEY='AIzaSyBkYbPpWErNB79vtSNZzAN62o72Lmyscyw'
