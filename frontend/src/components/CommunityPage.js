@@ -1,35 +1,44 @@
-// CommunityPage.js
+// CommunityPage.js: Page where user can post, edit, and delete as well as view other users posts
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CommunityPage = () => {
+      // Log the authentication token for debugging purposes
   console.log('Auth Token:', localStorage.getItem('authToken'));
-
+// State management hooks
+  // caption: for creating new posts
+  // posts: stores the list of community posts
+  // editingPost: tracks which post is currently being edited
+  // editCaption: stores the edited post text
+  // error: manages error messages
+  // loading: controls UI state during async operations
   const [caption, setCaption] = useState('');
   const [posts, setPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
   const [editCaption, setEditCaption] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
+  // Navigation hook for programmatic routing
   const navigate = useNavigate();
-
+ // Utility function to extract user ID from JWT token
+  // Decodes the token and returns the user's ID
   const getCurrentUserId = () => {
     const token = localStorage.getItem('authToken');
     if (token) {
+    // Decode the JWT token's payload
       const payload = JSON.parse(atob(token.split('.')[1]));
       console.log('Decoded Token Payload:', payload);
       return parseInt(payload.sub, 10);
     }
     return null;
   };
-
+// Fetch posts when component mounts
   useEffect(() => {
     fetchPosts();
   }, []);
-
+// Async function to fetch community posts from the backend
   const fetchPosts = async () => {
     try {
       console.log('Fetching posts...');
@@ -41,11 +50,13 @@ const CommunityPage = () => {
     }
   };
 
+  // Handle creating a new post
   const handlePost = async () => {
     try {
+        
       const token = localStorage.getItem('authToken');
       console.log('Token before request:', token);
-
+// Send post request with authorization token
       const response = await axios.post(
         'http://127.0.0.1:4444/community-post',
         { caption },
@@ -53,12 +64,13 @@ const CommunityPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+    // Update posts list and clear caption input
       setPosts([response.data, ...posts]);
       setCaption('');
     } catch (error) {
       console.error('Error creating post:', error.response?.data || error.message);
-
+     
+      // Handle unauthorized/expired token
       if (error.response && error.response.status === 401) {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
@@ -66,8 +78,9 @@ const CommunityPage = () => {
       }
     }
   };
-
+  // Handle editing an existing post
   const handleEdit = async (postId) => {
+    // Validate edit input
     if (!editCaption.trim()) {
       setError('Please enter some text for your post.');
       return;
@@ -77,7 +90,7 @@ const CommunityPage = () => {
     try {
       const token = localStorage.getItem('authToken');
       console.log('Token before edit request:', token);  // Debugging statement
-  
+        // Send PUT request to update post
       const response = await axios.put(
         `http://127.0.0.1:4444/community-post/${postId}`,
         { caption: editCaption },
@@ -85,7 +98,10 @@ const CommunityPage = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
+    
+    // Update posts list with edited post
       setPosts(posts.map(post => (post.id === postId ? response.data : post)));
+    // Reset editing state
       setEditingPost(null);
       setEditCaption('');
       setError('');
@@ -97,16 +113,17 @@ const CommunityPage = () => {
     }
   };
   
-
+// Handle deleting a post
   const handleDelete = async (postId) => {
     const token = localStorage.getItem('authToken');
+     // Confirm deletion with user
     console.log('Attempting to delete post with ID:', postId); // Debugging
     console.log('Token used for deletion:', token); // Debugging
   
     if (!window.confirm('Are you sure you want to delete this post?')) {
       return;
     }
-  
+  // Send DELETE request to remove post
     setLoading(true);
     try {
       await axios.delete(
@@ -115,7 +132,8 @@ const CommunityPage = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
-  
+
+    // Remove post from local state
       setPosts(posts.filter(post => post.id !== postId));
       setError('');
       console.log('Post deleted successfully'); // Debugging
@@ -133,6 +151,7 @@ const CommunityPage = () => {
   const currentUserId = getCurrentUserId();
   console.log('Current User ID:', currentUserId);
 
+  // Render the community page UI
   return (
     <div className="community-page" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>Community Posts</h1>

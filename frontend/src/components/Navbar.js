@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from './assets/logo.png';  // Import the logo image
+import logo from './assets/logo.png';  //import logo
 
 const Navbar = () => {
-  const navigate = useNavigate();  // For redirecting after logout
-
+      // Navigation hook for programmatic routing
+  const navigate = useNavigate(); 
+  // Logout handler function
   const handleLogout = () => {
-    // Clear auth token or authentication state
+    // Remove authentication token from local storage
+    // This effectively logs out the user
     localStorage.removeItem('authToken');
-    navigate('/login');  // Redirect to login page after logout
+    // Redirect to login page after logout
+    navigate('/login');  
   };
 
   return (
@@ -34,13 +37,13 @@ const Navbar = () => {
   );
 };
 
-// Styles for navbar
+
 const navbarStyles = {
   backgroundColor: '#06402B',
-  padding: '10px 5px', // Adjust padding to create space
+  padding: '10px 5px', 
   display: 'flex',
-  justifyContent: 'space-between', // Align logo to the left and nav items to the right
-  alignItems: 'center', // Center vertically
+  justifyContent: 'space-between',
+  alignItems: 'center', 
 };
 
 const logoContainerStyles = {
@@ -49,7 +52,7 @@ const logoContainerStyles = {
 };
 
 const logoStyles = {
-  width: '200px',  // Adjust the width of the logo
+  width: '200px',  
   height: 'auto',
 };
 
@@ -59,13 +62,13 @@ const ulStyles = {
   padding: '0',
   margin: '0',
   display: 'flex',
-  justifyContent: 'flex-end', // Aligns items to the right
-  gap: '50px', // Adds spacing between items
+  justifyContent: 'flex-end',
+  gap: '50px', 
 };
 
 const liStyles = {
     margin: '0 10px',
-    marginTop: '10px',  // Adds space to the top of each list item, moving them down
+    marginTop: '10px',  
   };
   
 const linkStyles = {
@@ -82,8 +85,8 @@ const logoutButtonStyles = {
     padding: '5px 20px',
     fontSize: '16px',
     cursor: 'pointer',
-    marginLeft: '-5px', // Moves the whole button 10px to the left
-    fontWeight: 'bold',  // Make the text inside the button bold
+    marginLeft: '-5px', 
+    fontWeight: 'bold',  
   };
   
 

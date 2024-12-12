@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo2 from './assets/logoCrop.png'; // Adjust the extension to match your file
+import logo2 from './assets/logoCrop.png'; //import the logo
 
 const EmissionChecker = () => {
+    // Retrieve authentication token from local storage
   const token = localStorage.getItem("authToken");
   console.log("The token when the emission page first loads: ", token);
+  // State management hooks
+  // food: stores the user's input food item
+  // result: stores the emission calculation results
+  // error: manages any error messages during API call
+  // loading: tracks the loading state during API request
   const [food, setFood] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); // Added loading state
-
+  const [loading, setLoading] = useState(false); 
+  // Handler to update food input state
   const handleInputChange = (e) => setFood(e.target.value);
-
+  // Async function to check carbon emissions for a food item
   const checkEmissions = async () => {
-    setLoading(true); // Start loading
-    const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
+       // Set loading state to true when request starts
+    setLoading(true); 
+        // Retrieve authentication token
+    const token = localStorage.getItem("authToken");
     // console.log("checkEmissions method is hit and this is the user token:", token);
     // console.log("This is the food they are trying to input:", {food});
     try {
@@ -23,24 +31,29 @@ const EmissionChecker = () => {
         {food},
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Attach the token in the Authorization header
-            "Content-Type": "application/json", // Explicitly set JSON content type
+            Authorization: `Bearer ${token}`, // Include JWT token for authentication
+            "Content-Type": "application/json", // json
           },
         }
       );
       // console.log(response.get_json());
+    // Update result state with API response
       setResult(response.data);
       setError(null);
     } catch (err) {
       // console.log(err);
+      
       if (err.response?.status === 401) {
+        // Unauthorized error (likely expired token)
         setError("Unauthorized. Please log in again.");
       } else {
+        // Generic error for other issues
         setError("Could not retrieve data. Please try again.");
       }
       setResult(null);
     } finally {
-      setLoading(false); // Stop loading
+      // Set loading state to false when request completes
+      setLoading(false);
     }
   };
   
