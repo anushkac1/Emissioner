@@ -44,3 +44,13 @@ An app to help individuals track their carbon emissions footprint via the food c
 Canvas - https://www.canva.com
 
 Uiverse - https://uiverse.io
+
+# Authors
+Anushka Chokshi
+
+Amrit Randev
+
+Aditi Jorapur 
+
+Sanjana Jagarlapudi
+
