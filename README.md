@@ -22,10 +22,10 @@ An app to help individuals track their carbon emissions footprint via the food c
    ```npm install```
 
 4. Create .env file
-5. Input the following into the .env file (located outside of all folders)
+5. Input the following into the .env file (located outside of all folders) and create a Gemini API Key from https://aistudio.google.com/apikey
    ```
    .gitignore
-   GEMINI_API_KEY='AIzaSyBkYbPpWErNB79vtSNZzAN62o72Lmyscyw'
+   GEMINI_API_KEY='your-gemini-key-here'
    SECRET_KEY=your_secret_key
    JWT_SECRET_KEY=your_jwt_secret_key
 
